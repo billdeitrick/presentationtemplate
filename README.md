@@ -29,7 +29,7 @@ Opens a landing page at `http://127.0.0.1:8080` where you can navigate to slides
 | Command | Description |
 | --- | --- |
 | `npm run serve` | Start live-server with auto-reload, presents menu to choose outline or slides as default page |
-| `npm run present` | Star tlive-server with auto-reload, goes directly to slides |
+| `npm run present` | Start live-server with auto-reload, goes directly to slides |
 | `npm run outline` | Open the outline in the browser |
 
 ## Outline (`outline.md`)
