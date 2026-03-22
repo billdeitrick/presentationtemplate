@@ -1,0 +1,24 @@
+/* Custom slide styles */
+
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+	text-transform: none;
+}
+
+.reveal {
+	font-size: 36px;
+}
+
+.reveal p {
+	margin: 20px 0;
+}
+
+.reveal ul {
+	display: block;
+	margin: 20px auto;
+}
+
+.reveal li {
+	margin: 10px 0;
+}

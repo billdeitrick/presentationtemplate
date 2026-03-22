@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "live-server": "^1.2.2",
+    "reveal.js": "^6.0.0"
+  },
+  "devDependencies": {
+    "@playwright/cli": "^0.1.1",
+    "@playwright/test": "^1.48.0"
+  },
+  "scripts": {
+    "serve": "live-server --host=127.0.0.1 --ignore=node_modules --wait=300",
+    "present": "live-server --host=127.0.0.1 --ignore=node_modules --wait=300 --open=slides/index.html",
+    "outline": "open http://127.0.0.1:8080/outline.html"
+  }
+}

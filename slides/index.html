@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Presentation</title>
+	<link rel="stylesheet" href="../node_modules/reveal.js/dist/reveal.css">
+	<link rel="stylesheet" href="../node_modules/reveal.js/dist/theme/black.css">
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<div class="reveal">
+		<div class="slides">
+
+			<!-- Title Slide -->
+			<section>
+				<h1>My Presentation</h1>
+				<p>Built with Reveal.js</p>
+			</section>
+
+			<!-- Intro Section -->
+			<section data-markdown>
+				<textarea data-template>
+					## Introduction
+
+					- Point one
+					- Point two
+					- Point three
+				</textarea>
+			</section>
+
+			<!-- Content Slide (HTML) -->
+			<section>
+				<h2>Custom Layout</h2>
+				<p>This slide uses HTML for more control</p>
+				<ul>
+					<li>Item 1</li>
+					<li>Item 2</li>
+					<li>Item 3</li>
+				</ul>
+			</section>
+
+			<!-- Another Markdown Slide -->
+			<section data-markdown>
+				<textarea data-template>
+					## Key Points
+
+					- Easy to write
+					- Fast iteration
+					- Works with Claude
+				</textarea>
+			</section>
+
+			<!-- Nested Slides (vertical) -->
+			<section>
+				<section>
+					<h2>Main Topic</h2>
+					<p>Press down arrow or swipe down</p>
+				</section>
+				<section data-markdown>
+					<textarea data-template>
+						## Subtopic 1
+
+						Details go here
+					</textarea>
+				</section>
+				<section data-markdown>
+					<textarea data-template>
+						## Subtopic 2
+
+						More details
+					</textarea>
+				</section>
+			</section>
+
+			<!-- Closing Slide -->
+			<section>
+				<h1>Thank You</h1>
+			</section>
+
+		</div>
+	</div>
+
+	<script src="../node_modules/reveal.js/dist/reveal.js"></script>
+	<script src="../node_modules/reveal.js/dist/plugin/markdown.js"></script>
+	<script src="../node_modules/reveal.js/dist/plugin/highlight.js"></script>
+	<script src="../node_modules/reveal.js/dist/plugin/notes.js"></script>
+	<script src="../node_modules/reveal.js/dist/plugin/search.js"></script>
+	<script src="../node_modules/reveal.js/dist/plugin/zoom.js"></script>
+	<script>
+		Reveal.initialize({
+			hash: true,
+			progress: false,
+			plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealSearch, RevealZoom ]
+		});
+
+		// Auto-hide cursor after 3 seconds of inactivity
+		let cursorTimer;
+		document.addEventListener('mousemove', () => {
+			document.body.style.cursor = 'default';
+			clearTimeout(cursorTimer);
+			cursorTimer = setTimeout(() => {
+				document.body.style.cursor = 'none';
+			}, 3000);
+		});
+	</script>
+</body>
+</html>

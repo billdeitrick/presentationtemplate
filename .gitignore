@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# Playwright
+.playwright-cli/
+.playwright
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
