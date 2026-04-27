@@ -26,6 +26,8 @@ This repo is a template for building presentations with [Reveal.js](https://reve
 npm run serve   # Start live-server with auto-reload at http://127.0.0.1:8080
 ```
 
+The user will often already have the dev server running. It's a good idea to check with them first to see if you need to start it.
+
 ## Slides
 
 - Slides are built with Reveal.js 6
@@ -48,3 +50,9 @@ npx playwright-cli <command>
 Use Playwright to take screenshots, verify slide design, test animations, and iterate on visual changes without manual browser interaction.
 
 The browser will log a `favicon.ico` 404 console error — this is harmless and can be ignored.
+
+- Use `Reveal.configure({transition: 'none'})` via `eval` before navigating, to avoid capturing mid-transition artifacts
+- Use `Reveal.slide(N)` via `eval` to navigate without triggering transitions, rather than `goto` with a hash URL
+- The dev server is managed by the user — never start or restart it
+
+ALWAYS use the Playwright skills when working with Playwright rather than starting from scratch.
