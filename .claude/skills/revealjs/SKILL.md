@@ -13,7 +13,7 @@ Create HTML presentations using reveal.js. No build step required - just open th
 
 A reveal.js presentation consists of:
 
-1. **HTML file** - Contains slides and loads reveal.js from CDN
+1. **HTML file** - Contains slides and loads reveal.js from local node_modules
 2. **CSS file** - Custom styles for layouts, colors, typography, and components
 
 ## Design Principles
@@ -211,9 +211,24 @@ Use inline styles for layout (grids, flex containers) since those vary per slide
 
 **IMPORTANT: Use the Edit tool to fill in slides incrementally** — one or a few slides at a time. Do NOT rewrite the entire HTML file with the Write tool. The scaffold generates unique placeholder text per slide (e.g., `Slide 2 Title Here`), so each section can be targeted with Edit. This is more token-efficient and less error-prone than generating the full file at once.
 
-Follow these patterns:
+**Default: use markdown slides.** The scaffold generates `data-markdown` sections for content slides. Fill them in with markdown:
 
-**Standard slide structure:**
+```html
+<section id="slide-2" data-markdown>
+  <textarea data-template>
+## Slide Title
+
+- Point one
+- Point two
+- Point three
+
+  </textarea>
+</section>
+```
+
+Only switch to HTML when you need multi-column layouts, custom containers, charts, or other elements that can't be expressed in markdown. When you do, use the following patterns:
+
+**HTML slide structure:**
 ```html
 <section id="unique-slide-id">
   <h2>Slide Title</h2>
@@ -272,19 +287,30 @@ If overflow is detected, reduce content or adjust font sizes on affected slides.
 
 **CRITICAL: You MUST review screenshots of EVERY SINGLE SLIDE.** Do not skip slides or review only a sample. Visual issues are common and can only be caught by examining each slide individually.
 
-Use the **playwright-cli skill** to capture screenshots. The dev server must be running at `http://127.0.0.1:8080`. Before navigating between slides, always disable transitions to avoid capturing mid-animation artifacts:
+Use the **playwright-cli skill** to capture screenshots. The dev server must be running at `http://127.0.0.1:8080`.
 
-```
-# Disable transitions, then screenshot each slide by index (0-based)
-eval: Reveal.configure({transition: 'none'})
-eval: Reveal.slide(0)
-screenshot: slides/screenshots/slide-0.png
-eval: Reveal.slide(1)
-screenshot: slides/screenshots/slide-1.png
+```bash
+# Open the presentation
+playwright-cli open http://127.0.0.1:8080/slides/index.html
+playwright-cli resize 1920 1080
+# Disable transitions to avoid mid-animation artifacts
+playwright-cli eval "Reveal.configure({transition: 'none'})"
+# Check total slide count
+playwright-cli eval "Reveal.getTotalSlides()"
+# Navigate to each slide (0-based horizontal index) and screenshot
+playwright-cli eval "Reveal.slide(0)"
+playwright-cli screenshot --filename=slides/screenshots/slide-0.png
+playwright-cli eval "Reveal.slide(1)"
+playwright-cli screenshot --filename=slides/screenshots/slide-1.png
 # ...repeat for each slide
+playwright-cli close
 ```
 
-Use `Reveal.getTotalSlides()` via eval to determine the slide count before starting.
+**Vertical slides** use a two-argument form — `Reveal.slide(h, v)` where `h` is the horizontal index and `v` is the vertical index (both 0-based):
+```bash
+playwright-cli eval "Reveal.slide(2, 0)"   # first slide in stack at column 2
+playwright-cli eval "Reveal.slide(2, 1)"   # second slide in stack at column 2
+```
 
 Then use the Read tool to examine each screenshot image file.
 
@@ -361,14 +387,15 @@ For fragments (progressive reveal), speaker notes, custom backgrounds, auto-anim
 
 ```javascript
 Reveal.initialize({
-  controls: true,          // Show navigation arrows
-  progress: true,          // Show progress bar
-  slideNumber: true,       // Show slide numbers
-  hash: true,              // Update URL hash for each slide
-  transition: 'slide',     // none/fade/slide/convex/concave/zoom
-  center: false,           // Vertical centering of slide content
-  autoSlide: 0,            // Auto-advance (ms), 0 to disable
-  loop: false,             // Loop presentation
+  controls: true,               // Show navigation arrows
+  progress: false,              // Show progress bar (disabled by default)
+  slideNumber: false,           // Show slide numbers
+  hash: true,                   // Update URL hash for each slide
+  transition: 'slide',          // none/fade/slide/convex/concave/zoom
+  center: false,                // Vertical centering of slide content
+  pdfSeparateFragments: false,  // Print fragments on same page
+  autoSlide: 0,                 // Auto-advance (ms), 0 to disable
+  loop: false,                  // Loop presentation
 });
 ```
 

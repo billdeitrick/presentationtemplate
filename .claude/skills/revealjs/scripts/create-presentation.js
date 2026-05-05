@@ -98,8 +98,13 @@ function generateSlides(structure) {
 `;
       } else {
         slides += `
-      <section id="slide-${hIndex}">
-        <h2>Slide ${hIndex} Title Here</h2>
+      <section id="slide-${hIndex}" data-markdown>
+        <textarea data-template>
+## Slide ${hIndex} Title Here
+
+Content here
+
+        </textarea>
       </section>
 `;
       }
@@ -110,8 +115,13 @@ function generateSlides(structure) {
       <section>
 `;
       for (let vIndex = 1; vIndex <= item; vIndex++) {
-        slides += `        <section id="slide-${hIndex}-${vIndex}">
-          <h2>Slide ${hIndex}.${vIndex} Title Here</h2>
+        slides += `        <section id="slide-${hIndex}-${vIndex}" data-markdown>
+          <textarea data-template>
+## Slide ${hIndex}.${vIndex} Title Here
+
+Content here
+
+          </textarea>
         </section>
 `;
       }
@@ -171,6 +181,7 @@ ${slidesContent}
       transition: 'slide',
       center: false,
       plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealChart ],
+      pdfSeparateFragments: false,
       chart: {
         defaults: Object.assign({
           color: 'rgba(0, 0, 0, 0.8)',
@@ -178,6 +189,16 @@ ${slidesContent}
           devicePixelRatio: 2
         }, window.location.search.includes('export') ? { animation: false } : {})
       }
+    });
+
+    // Auto-hide cursor after 3 seconds of inactivity
+    let cursorTimer;
+    document.addEventListener('mousemove', () => {
+      document.body.style.cursor = 'default';
+      clearTimeout(cursorTimer);
+      cursorTimer = setTimeout(() => {
+        document.body.style.cursor = 'none';
+      }, 3000);
     });
   </script>
 </body>
