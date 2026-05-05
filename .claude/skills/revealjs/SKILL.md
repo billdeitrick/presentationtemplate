@@ -432,6 +432,26 @@ Use these directly without custom CSS:
 <img class="r-stretch" src="image.jpg">
 ```
 
+## Adding Mermaid Diagrams
+
+For flowcharts, sequence diagrams, architecture diagrams, and other visual diagrams, use the **mermaid skill**. Mermaid is loaded via CDN and initialized automatically in every slide HTML file.
+
+Embed diagrams with `<pre class="mermaid">` inside the `.content` wrapper:
+
+```html
+<section id="slide-diagram">
+  <h2>System Flow</h2>
+  <div class="content">
+    <pre class="mermaid">
+flowchart LR
+    Client --> API --> Database
+    </pre>
+  </div>
+</section>
+```
+
+See `.claude/skills/mermaid/SKILL.md` for the full diagram type reference, theming instructions, and embedding patterns.
+
 ## Adding Charts
 
 **IMPORTANT: Before adding ANY chart, you MUST read [references/charts.md](references/charts.md).** Charts require specific flexbox/grid patterns to size correctly and avoid overflow. Do not attempt to add charts without reading the full documentation first.

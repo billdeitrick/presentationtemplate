@@ -152,6 +152,9 @@ function generateHTML(options) {
 
   <!-- Chart.js for data visualization -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Mermaid for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 </head>
 <body>
   <div class="reveal">
@@ -189,6 +192,15 @@ ${slidesContent}
         }, window.location.search.includes('export') ? { animation: false } : {})
       }
     });
+
+    // Mermaid diagram rendering
+    mermaid.initialize({ startOnLoad: false, theme: 'default' });
+    const renderMermaid = () => {
+      const slide = Reveal.getCurrentSlide();
+      if (slide) mermaid.run({ nodes: slide.querySelectorAll('pre.mermaid') });
+    };
+    Reveal.on('ready', renderMermaid);
+    Reveal.on('slidechanged', renderMermaid);
 
     // Auto-hide cursor after 3 seconds of inactivity
     let cursorTimer;

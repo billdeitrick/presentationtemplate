@@ -217,6 +217,28 @@
 .font-bold { font-weight: 600; }
 
 /* ===========================================
+   MERMAID DIAGRAMS
+   =========================================== */
+
+/* Strip default <pre> styling from mermaid containers */
+.reveal pre.mermaid {
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
+  text-align: center;
+  width: 100%;
+  overflow: visible;
+}
+
+.reveal pre.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ===========================================
    BLOCKQUOTES
    =========================================== */
 
