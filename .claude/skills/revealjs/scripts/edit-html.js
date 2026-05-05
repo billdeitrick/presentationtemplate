@@ -272,7 +272,7 @@ const server = http.createServer((req, res) => {
   res.end('Not found');
 });
 
-server.listen(PORT, '127.0.0.1', () => {
+server.listen(PORT, () => {
   const url = `http://localhost:${PORT}`;
   console.log(`\n🖊️  HTML Editor running at ${url}`);
   console.log(`   Editing: ${htmlFilePath}\n`);
