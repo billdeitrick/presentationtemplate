@@ -173,6 +173,7 @@ ${slidesContent}
       height: 720,
       margin: 0,
       controls: true,
+      controlsTutorial: false,
       progress: false,
       slideNumber: false,
       hash: true,

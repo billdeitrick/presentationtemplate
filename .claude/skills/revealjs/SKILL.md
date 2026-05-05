@@ -103,9 +103,9 @@ node .claude/skills/revealjs/scripts/create-presentation.js --structure 1,1,d,3,
   - `1` = single horizontal slide
   - `N` (where N > 1) = vertical stack of N slides
   - `d` = section divider slide (centered, no content wrapper)
-- `--output <file>` - Output filename (default: presentation.html)
+- `--output <file>` - Output filename — always use `slides/index.html` for this project
 - `--title <text>` - Presentation title
-- `--styles <file>` - Custom CSS filename (default: styles.css)
+- `--styles <file>` - CSS filename (default: styles.css, placed alongside the HTML)
 
 **Examples:**
 ```bash
@@ -118,7 +118,7 @@ node .claude/skills/revealjs/scripts/create-presentation.js --structure 1,1,1,d,
 
 ### Step 3: Customize the CSS
 
-The scaffold script automatically copies `base-styles.css` to your presentation directory as `styles.css`. Now customize the CSS variables (especially colors) for your presentation theme.
+The scaffold script copies `base-styles.css` into `slides/styles.css` if it doesn't already exist. Customize the CSS variables (especially colors) for your presentation theme.
 
 **Using Google Fonts:** Add an `@import` at the top of your CSS file:
 ```css
@@ -403,15 +403,17 @@ For fragments (progressive reveal), speaker notes, custom backgrounds, auto-anim
 
 ```javascript
 Reveal.initialize({
+  width: 1280,                  // Fixed canvas width (px)
+  height: 720,                  // Fixed canvas height (px)
+  margin: 0,                    // No margin around slides
   controls: true,               // Show navigation arrows
-  progress: false,              // Show progress bar (disabled by default)
-  slideNumber: false,           // Show slide numbers
+  controlsTutorial: false,      // No bouncing arrow animation
+  progress: false,              // No progress bar
+  slideNumber: false,           // No slide numbers
   hash: true,                   // Update URL hash for each slide
   transition: 'slide',          // none/fade/slide/convex/concave/zoom
-  center: false,                // Vertical centering of slide content
+  center: false,                // Content aligns to top, not centered
   pdfSeparateFragments: false,  // Print fragments on same page
-  autoSlide: 0,                 // Auto-advance (ms), 0 to disable
-  loop: false,                  // Loop presentation
 });
 ```
 
