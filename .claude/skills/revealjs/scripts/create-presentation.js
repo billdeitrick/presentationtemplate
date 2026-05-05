@@ -98,13 +98,11 @@ function generateSlides(structure) {
 `;
       } else {
         slides += `
-      <section id="slide-${hIndex}" data-markdown>
-        <textarea data-template>
-## Slide ${hIndex} Title Here
+      <section id="slide-${hIndex}">
+        <h2>Slide ${hIndex} Title Here</h2>
+        <div class="content">
 
-Content here
-
-        </textarea>
+        </div>
       </section>
 `;
       }
@@ -115,13 +113,11 @@ Content here
       <section>
 `;
       for (let vIndex = 1; vIndex <= item; vIndex++) {
-        slides += `        <section id="slide-${hIndex}-${vIndex}" data-markdown>
-          <textarea data-template>
-## Slide ${hIndex}.${vIndex} Title Here
+        slides += `        <section id="slide-${hIndex}-${vIndex}">
+          <h2>Slide ${hIndex}.${vIndex} Title Here</h2>
+          <div class="content">
 
-Content here
-
-          </textarea>
+          </div>
         </section>
 `;
       }
@@ -168,6 +164,8 @@ ${slidesContent}
   <script src="../node_modules/reveal.js/dist/plugin/markdown.js"></script>
   <script src="../node_modules/reveal.js/dist/plugin/highlight.js"></script>
   <script src="../node_modules/reveal.js/dist/plugin/notes.js"></script>
+  <script src="../node_modules/reveal.js/dist/plugin/search.js"></script>
+  <script src="../node_modules/reveal.js/dist/plugin/zoom.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/chart/plugin.js"></script>
   <script>
     Reveal.initialize({
@@ -180,7 +178,7 @@ ${slidesContent}
       hash: true,
       transition: 'slide',
       center: false,
-      plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealChart ],
+      plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealSearch, RevealZoom, RevealChart ],
       pdfSeparateFragments: false,
       chart: {
         defaults: Object.assign({

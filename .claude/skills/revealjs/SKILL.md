@@ -1,13 +1,13 @@
 ---
 name: revealjs
-description: Create polished, professional reveal.js presentations. Use when the user asks to create slides, a presentation, a deck, or a slideshow. Supports themes, multi-column layouts, code highlighting, animations, speaker notes, and custom styling. Generates HTML + CSS with no build step required.
+description: Create polished, professional reveal.js presentations. Use when the user asks to create slides, a presentation, a deck, or a slideshow. Supports themes, multi-column layouts, code highlighting, animations, speaker notes, and custom styling. Generates HTML + CSS served via a local dev server.
 ---
 
 > Vendored from [ryanbbrown/revealjs-skill](https://github.com/ryanbbrown/revealjs-skill) — MIT License, Copyright (c) 2025 Ryan Brown. See [LICENSE](LICENSE). Local customizations may diverge from upstream.
 
 # Reveal.js Presentations
 
-Create HTML presentations using reveal.js. No build step required - just open the HTML in a browser.
+Create HTML presentations using reveal.js. Slides are served via `npm run serve` (live-server at `http://127.0.0.1:8080`).
 
 ## What You Create
 
@@ -72,8 +72,6 @@ A reveal.js presentation consists of:
 - Use **visual hierarchy**: `<strong>` for key terms, different colors to distinguish categories
 - Break up lists with other elements (quotes, styled containers, columns)
 - Don't repeat the same layout pattern on consecutive slides
-
-**Prefer markdown over HTML.** Use `data-markdown` slides for any content that doesn't require custom layout. Only reach for HTML when you need multi-column grids, custom containers, or chart embeds. Most text-heavy slides should be markdown.
 
 **Keep it scannable:**
 - Short bullet points, not paragraphs
@@ -211,7 +209,32 @@ Use inline styles for layout (grids, flex containers) since those vary per slide
 
 **IMPORTANT: Use the Edit tool to fill in slides incrementally** — one or a few slides at a time. Do NOT rewrite the entire HTML file with the Write tool. The scaffold generates unique placeholder text per slide (e.g., `Slide 2 Title Here`), so each section can be targeted with Edit. This is more token-efficient and less error-prone than generating the full file at once.
 
-**Default: use markdown slides.** The scaffold generates `data-markdown` sections for content slides. Fill them in with markdown:
+**Default: use HTML slides.** The scaffold generates HTML sections with a `.content` wrapper. Fill them in with HTML:
+
+```html
+<section id="slide-2">
+  <h2>Slide Title</h2>
+  <div class="content">
+    <ul>
+      <li>Point one</li>
+      <li>Point two</li>
+      <li>Point three</li>
+    </ul>
+  </div>
+</section>
+```
+
+**HTML slide structure:**
+```html
+<section id="unique-slide-id">
+  <h2>Slide Title</h2>
+  <div class="content">
+    <!-- Content here -->
+  </div>
+</section>
+```
+
+**Alternative: markdown slides.** If the user specifically requests it, you can use `data-markdown` slides for plain text content. Note that markdown slides bypass the `.content` wrapper, so the flexbox layout from `base-styles.css` will not apply — use them only when layout fidelity doesn't matter:
 
 ```html
 <section id="slide-2" data-markdown>
@@ -223,18 +246,6 @@ Use inline styles for layout (grids, flex containers) since those vary per slide
 - Point three
 
   </textarea>
-</section>
-```
-
-Only switch to HTML when you need multi-column layouts, custom containers, charts, or other elements that can't be expressed in markdown. When you do, use the following patterns:
-
-**HTML slide structure:**
-```html
-<section id="unique-slide-id">
-  <h2>Slide Title</h2>
-  <div class="content">
-    <!-- Content here -->
-  </div>
 </section>
 ```
 
@@ -290,6 +301,9 @@ If overflow is detected, reduce content or adjust font sizes on affected slides.
 Use the **playwright-cli skill** to capture screenshots. The dev server must be running at `http://127.0.0.1:8080`.
 
 ```bash
+# Create screenshots directory first
+mkdir -p slides/screenshots
+
 # Open the presentation
 playwright-cli open http://127.0.0.1:8080/slides/index.html
 playwright-cli resize 1920 1080
@@ -339,6 +353,8 @@ node .claude/skills/revealjs/scripts/edit-html.js slides/index.html
 ```
 
 This opens the presentation in a local server where they can click any text to edit it inline, then save changes back to the file. It's useful for wordsmithing, fixing typos, or tweaking copy without needing to edit raw HTML.
+
+**Note:** `edit-html.js` does not work cleanly with `data-markdown` slides — saving will serialize the rendered DOM and destroy the markdown source. Only suggest this tool for HTML-based presentations.
 
 **Always mention this at the end** of a presentation as a suggestion, e.g.:
 
