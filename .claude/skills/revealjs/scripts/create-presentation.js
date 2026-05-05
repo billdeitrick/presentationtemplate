@@ -11,6 +11,10 @@ const path = require('path');
 // Path to the base styles file (relative to this script)
 const BASE_STYLES_PATH = path.join(__dirname, '..', 'references', 'base-styles.css');
 
+function escapeHtml(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 function parseArgs(args) {
   const options = {
     slides: null,
@@ -128,7 +132,7 @@ function generateHTML(options) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${options.title}</title>
+  <title>${escapeHtml(options.title)}</title>
 
   <!-- Reveal.js core -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">

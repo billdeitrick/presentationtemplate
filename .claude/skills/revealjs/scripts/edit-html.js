@@ -246,8 +246,8 @@ const server = http.createServer((req, res) => {
 
   // Serve other static files (css, js, images) from the same directory
   const baseDir = path.dirname(htmlFilePath);
-  const filePath = path.join(baseDir, req.url);
-  if (!filePath.startsWith(baseDir)) { res.writeHead(403); res.end('Forbidden'); return; }
+  const filePath = path.join(baseDir, req.url.split('?')[0]);
+  if (!filePath.startsWith(baseDir + path.sep)) { res.writeHead(403); res.end('Forbidden'); return; }
   if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
     const ext = path.extname(filePath).toLowerCase();
     const mimeTypes = {
@@ -272,7 +272,7 @@ const server = http.createServer((req, res) => {
   res.end('Not found');
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, '127.0.0.1', () => {
   const url = `http://localhost:${PORT}`;
   console.log(`\n🖊️  HTML Editor running at ${url}`);
   console.log(`   Editing: ${htmlFilePath}\n`);
