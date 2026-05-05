@@ -73,6 +73,8 @@ A reveal.js presentation consists of:
 - Break up lists with other elements (quotes, styled containers, columns)
 - Don't repeat the same layout pattern on consecutive slides
 
+**Prefer markdown over HTML.** Use `data-markdown` slides for any content that doesn't require custom layout. Only reach for HTML when you need multi-column grids, custom containers, or chart embeds. Most text-heavy slides should be markdown.
+
 **Keep it scannable:**
 - Short bullet points, not paragraphs
 - One main idea per slide when possible
@@ -254,10 +256,10 @@ Why inline styles for grids? Each slide's layout needs vary - column ratios, gap
 
 ### Step 5: Check for Content Overflow
 
-Run the overflow checker to ensure no slides have content that extends beyond boundaries:
+Run the overflow checker against the dev server (confirm it's running at `:8080` first):
 
 ```bash
-node .claude/skills/revealjs/scripts/check-overflow.js slides/index.html
+node .claude/skills/revealjs/scripts/check-overflow.js http://127.0.0.1:8080/slides/index.html
 ```
 
 The script checks each slide for:
@@ -270,18 +272,19 @@ If overflow is detected, reduce content or adjust font sizes on affected slides.
 
 **CRITICAL: You MUST review screenshots of EVERY SINGLE SLIDE.** Do not skip slides or review only a sample. Visual issues are common and can only be caught by examining each slide individually.
 
-Capture screenshots of all slides:
+Use the **playwright-cli skill** to capture screenshots. The dev server must be running at `http://127.0.0.1:8080`. Before navigating between slides, always disable transitions to avoid capturing mid-animation artifacts:
 
-```bash
-cd slides
-npx decktape reveal "index.html?export" output.pdf \
-  --screenshots \
-  --screenshots-directory "screenshots/$(date +%Y%m%d_%H%M%S)"
+```
+# Disable transitions, then screenshot each slide by index (0-based)
+eval: Reveal.configure({transition: 'none'})
+eval: Reveal.slide(0)
+screenshot: slides/screenshots/slide-0.png
+eval: Reveal.slide(1)
+screenshot: slides/screenshots/slide-1.png
+# ...repeat for each slide
 ```
 
-**Note:** The `?export` query parameter disables chart animations for cleaner PDF rendering. Charts will still animate when viewing the HTML directly in a browser.
-
-This creates a timestamped folder (e.g., `screenshots/20241210_143052/`) so you can track versions and compare before/after fixes.
+Use `Reveal.getTotalSlides()` via eval to determine the slide count before starting.
 
 Then use the Read tool to examine each screenshot image file.
 
@@ -299,15 +302,7 @@ The overflow script catches most layout issues, but these problems require visua
 
 5. **Unexpected text wrap**: Text that you expected to fit on one line actually overflows to two lines. This is especially common in column layouts, where the header of one column may wrap while the rest don't, making things uneven.
 
-**Re-capture specific slides after fixes:**
-```bash
-npx decktape reveal "index.html?export" output.pdf \
-  --screenshots \
-  --screenshots-directory "screenshots/$(date +%Y%m%d_%H%M%S)" \
-  --slides 2,5,7-9
-```
-
-Then re-examine the updated screenshots to verify fixes. The new timestamped folder makes it easy to compare with the previous version.
+After fixes, re-screenshot only the affected slides to verify.
 
 ### Step 7: Suggest Browser Editing
 
@@ -430,7 +425,7 @@ The scaffold includes the Chart.js plugin for adding bar, line, pie, doughnut, a
 
 ## Dependencies
 
-Required for the scripts, should be already installed:
+Required for the scripts, should be already installed via `npm install`:
 - **Node.js** (for running scripts)
-- **Puppeteer** (for overflow checking): `npm install puppeteer`
-- **Decktape** (for screenshots): `npx decktape` (runs directly)
+- **@playwright/test** (for overflow checking — already a dev dependency)
+- **reveal.js** (local install — already a dependency)

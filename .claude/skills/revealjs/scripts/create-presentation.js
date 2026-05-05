@@ -134,9 +134,9 @@ function generateHTML(options) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${escapeHtml(options.title)}</title>
 
-  <!-- Reveal.js core -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <!-- Reveal.js core (local) -->
+  <link rel="stylesheet" href="../node_modules/reveal.js/dist/reset.css">
+  <link rel="stylesheet" href="../node_modules/reveal.js/dist/reveal.css">
 
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -154,7 +154,10 @@ ${slidesContent}
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="../node_modules/reveal.js/dist/reveal.js"></script>
+  <script src="../node_modules/reveal.js/dist/plugin/markdown.js"></script>
+  <script src="../node_modules/reveal.js/dist/plugin/highlight.js"></script>
+  <script src="../node_modules/reveal.js/dist/plugin/notes.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/chart/plugin.js"></script>
   <script>
     Reveal.initialize({
@@ -162,12 +165,12 @@ ${slidesContent}
       height: 720,
       margin: 0,
       controls: true,
-      progress: true,
+      progress: false,
       slideNumber: false,
       hash: true,
       transition: 'slide',
       center: false,
-      plugins: [ RevealChart ],
+      plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealChart ],
       chart: {
         defaults: Object.assign({
           color: 'rgba(0, 0, 0, 0.8)',
