@@ -41,10 +41,10 @@ The user will often already have the dev server running. It's a good idea to che
 
 ### Playwright
 
-Playwright CLI is available as a dev dependency and must be run with `npx`:
+Playwright CLI is installed globally and available as `playwright`:
 
 ```bash
-npx playwright-cli <command>
+playwright <command>
 ```
 
 Use Playwright to take screenshots, verify slide design, test animations, and iterate on visual changes without manual browser interaction.

@@ -214,13 +214,13 @@ playwright-cli close-all
 playwright-cli kill-all
 ```
 
-## Local installation
+## Installation
 
-In some cases user might want to install playwright-cli locally. If running globally available `playwright-cli` binary fails, use `npx playwright-cli` to run the commands. For example:
+`playwright-cli` is installed globally. Always use it directly:
 
 ```bash
-npx playwright-cli open https://example.com
-npx playwright-cli click e1
+playwright-cli open https://example.com
+playwright-cli click e1
 ```
 
 ## Example: Form submission

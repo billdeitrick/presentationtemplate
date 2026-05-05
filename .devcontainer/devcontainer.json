@@ -7,7 +7,15 @@
   "mounts": [
     "source=${localWorkspaceFolderBasename}-node-modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
   ],
-  "postCreateCommand": "sudo chown -R $(id -u):$(id -g) node_modules && npm install && npm install -g @playwright/cli @github/copilot && npx playwright install --with-deps chromium",
+  "postCreateCommand": [
+    "curl -fsSL https://claude.ai/install.sh | bash",
+    "curl -fsSL https://opencode.ai/install | bash",
+    "curl -fsSL https://gh.io/copilot-install | bash",
+    "sudo chown -R $(id -u):$(id -g) node_modules",
+    "npm install",
+    "npm install -g @playwright/cli",
+    "npx playwright install --with-deps chromium"
+  ],
   "forwardPorts": [8080],
   "portsAttributes": {
     "8080": {
