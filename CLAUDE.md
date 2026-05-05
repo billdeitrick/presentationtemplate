@@ -2,6 +2,10 @@
 
 This repo is a template for building presentations with [Reveal.js](https://revealjs.com/). Each project using this template is a self-contained presentation with brainstorming, outlining, and slides in one place.
 
+## Presentation Abstract and Requirements
+
+The presentation abstract and requirements will go here as defined for the specific presentation. Use this information to help guide the user with content.
+
 ## Workflow
 
 1. **Brainstorm & outline** in `outline.md`
@@ -26,14 +30,14 @@ This repo is a template for building presentations with [Reveal.js](https://reve
 npm run serve   # Start live-server with auto-reload at http://127.0.0.1:8080
 ```
 
-The user will often already have the dev server running. It's a good idea to check with them first to see if you need to start it.
+The user will often already have the dev server running. It's a good idea to check with them first to see if you need to start it (or just go check yourself via CLI commands).
 
 ## Slides
 
-- Slides are built with Reveal.js 6
-- Mix HTML and markdown slides freely using `data-markdown` attribute
-- `hash: true` is enabled — slides stay on the same position after refresh
-- Generally, use markdown unless the users asks for something that requires reaching for HTML
+ALWAYS use the revealjs skill wherever possible when working with slides and design. This has resources and instructions to improve consistency and quality.
+
+- Slides are built with Reveal.js
+- `hash: true` should be enabled — slides stay on the same position after refresh
 - Navigate with arrow keys; vertical slides use the down arrow
 - Be sure to always use reveal.js config options and utilities as a first choice before resulting to ad-hoc HTML, JS, and CSS
 
@@ -46,6 +50,7 @@ Playwright CLI is installed globally and available as `playwright`:
 ```bash
 playwright <command>
 ```
+ALWAYS use the Playwright CLI skill when working with Playwright rather than starting from scratch.
 
 Use Playwright to take screenshots, verify slide design, test animations, and iterate on visual changes without manual browser interaction.
 
@@ -54,5 +59,3 @@ The browser will log a `favicon.ico` 404 console error — this is harmless and 
 - Use `Reveal.configure({transition: 'none'})` via `eval` before navigating, to avoid capturing mid-transition artifacts
 - Use `Reveal.slide(N)` via `eval` to navigate without triggering transitions, rather than `goto` with a hash URL
 - The dev server is managed by the user — never start or restart it
-
-ALWAYS use the Playwright skills when working with Playwright rather than starting from scratch.
