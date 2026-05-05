@@ -8,4 +8,4 @@ curl -fsSL https://gh.io/copilot-install | bash
 sudo chown -R $(id -u):$(id -g) node_modules
 npm install
 npm install -g @playwright/cli
-npx playwright install --with-deps chromium
+playwright-cli install-browser --with-deps chromium --only-shell
