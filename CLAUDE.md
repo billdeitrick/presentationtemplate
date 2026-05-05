@@ -45,12 +45,12 @@ ALWAYS use the revealjs skill wherever possible when working with slides and des
 
 ### Playwright
 
-Playwright CLI is installed globally and available as `playwright`:
+Playwright CLI is installed globally and available as `playwright-cli` skill:
 
 ```bash
-playwright <command>
+playwright-cli <command>
 ```
-ALWAYS use the Playwright CLI skill when working with Playwright rather than starting from scratch.
+ALWAYS use the playwright-cli skill when interacting with the presentation or working with Playwright rather than using Bash or npx commands directly.
 
 Use Playwright to take screenshots, verify slide design, test animations, and iterate on visual changes without manual browser interaction.
 
