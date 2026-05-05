@@ -3,6 +3,8 @@ name: revealjs
 description: Create polished, professional reveal.js presentations. Use when the user asks to create slides, a presentation, a deck, or a slideshow. Supports themes, multi-column layouts, code highlighting, animations, speaker notes, and custom styling. Generates HTML + CSS with no build step required.
 ---
 
+> Vendored from [ryanbbrown/revealjs-skill](https://github.com/ryanbbrown/revealjs-skill) — MIT License, Copyright (c) 2025 Ryan Brown. See [LICENSE](LICENSE). Local customizations may diverge from upstream.
+
 # Reveal.js Presentations
 
 Create HTML presentations using reveal.js. No build step required - just open the HTML in a browser.
