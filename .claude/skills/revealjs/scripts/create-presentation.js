@@ -145,16 +145,16 @@ function generateHTML(options) {
   <link rel="stylesheet" href="../node_modules/reveal.js/dist/reveal.css">
 
   <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
 
   <!-- Custom styles -->
   <link rel="stylesheet" href="${options.stylesFile}">
 
   <!-- Chart.js for data visualization -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../node_modules/chart.js/dist/chart.umd.min.js"></script>
 
   <!-- Mermaid for diagrams -->
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script src="../node_modules/mermaid/dist/mermaid.min.js"></script>
 </head>
 <body>
   <div class="reveal">
@@ -169,7 +169,7 @@ ${slidesContent}
   <script src="../node_modules/reveal.js/dist/plugin/notes.js"></script>
   <script src="../node_modules/reveal.js/dist/plugin/search.js"></script>
   <script src="../node_modules/reveal.js/dist/plugin/zoom.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/chart/plugin.js"></script>
+  <script src="../node_modules/reveal.js-plugins/chart/plugin.js"></script>
   <script>
     Reveal.initialize({
       width: 1280,

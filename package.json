@@ -1,7 +1,11 @@
 {
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.5.1",
+    "chart.js": "^4.4.0",
     "live-server": "^1.2.2",
-    "reveal.js": "^6.0.0"
+    "mermaid": "^11.0.0",
+    "reveal.js": "^6.0.0",
+    "reveal.js-plugins": "latest"
   },
   "devDependencies": {
     "@playwright/cli": "^0.1.1",

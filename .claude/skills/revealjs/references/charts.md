@@ -8,10 +8,10 @@ The chart plugin is included by default in the scaffold. It adds these to your H
 
 ```html
 <!-- In <head> -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="../node_modules/chart.js/dist/chart.umd.min.js"></script>
 
 <!-- Before Reveal.initialize() -->
-<script src="https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/chart/plugin.js"></script>
+<script src="../node_modules/reveal.js-plugins/chart/plugin.js"></script>
 
 <!-- In Reveal.initialize() -->
 Reveal.initialize({
