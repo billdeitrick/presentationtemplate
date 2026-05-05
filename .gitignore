@@ -5,6 +5,9 @@ node_modules/
 .playwright-cli/
 .playwright
 
+# Devcontainer lock (intentionally excluded — always use latest feature versions)
+.devcontainer/devcontainer-lock.json
+
 # Claude Code local settings
 .claude/settings.local.json
 
