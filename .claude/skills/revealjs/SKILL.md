@@ -471,4 +471,5 @@ The scaffold includes the Chart.js plugin for adding bar, line, pie, doughnut, a
 Required for the scripts, should be already installed via `npm install`:
 - **Node.js** (for running scripts)
 - **@playwright/test** (for overflow checking — already a dev dependency)
+- **cheerio** (for chart validation — already a dev dependency)
 - **reveal.js** (local install — already a dependency)

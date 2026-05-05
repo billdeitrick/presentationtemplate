@@ -9,7 +9,7 @@ The presentation abstract and requirements will go here as defined for the speci
 ## Workflow
 
 1. **Brainstorm & outline** in `outline.md`
-2. **Build slides** in `slides/index.html` (mix of HTML and markdown)
+2. **Build slides** in `slides/index.html` (HTML-first; markdown optional)
 3. **Serve and present** with `npm run serve`
 
 ## Project Structure
@@ -57,5 +57,5 @@ Use Playwright to take screenshots, verify slide design, test animations, and it
 The browser will log a `favicon.ico` 404 console error — this is harmless and can be ignored.
 
 - Use `Reveal.configure({transition: 'none'})` via `eval` before navigating, to avoid capturing mid-transition artifacts
-- Use `Reveal.slide(N)` via `eval` to navigate without triggering transitions, rather than `goto` with a hash URL
+- Use `Reveal.slide(N)` via `eval` to navigate without triggering transitions, rather than `goto` with a hash URL. For vertical slides use the two-argument form: `Reveal.slide(h, v)`
 - The dev server is managed by the user — never start or restart it
