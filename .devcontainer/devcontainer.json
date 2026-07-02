@@ -22,10 +22,16 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "ritwickdey.LiveServer",
-        "yzhang.markdown-all-in-one",
-        "DavidAnson.vscode-markdownlint",
-        "esbenp.prettier-vscode"
+        "bierner.markdown-mermaid",
+        "davidanson.vscode-markdownlint",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "johnpapa.read-time",
+        "ms-vscode.wordcount",
+        "ms-vsliveshare.vsliveshare",
+        "ritwickdey.liveserver",
+        "streetsidesoftware.code-spell-checker",
+        "yzhang.markdown-all-in-one"
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "bash"
