@@ -1,0 +1,49 @@
+# iron-proxy configuration for the agent-devcontainer sandbox.
+#
+# The agent container's DNS is pointed at this proxy (see docker-compose.yml),
+# and its network is `internal: true`, so this is the ONLY path off the
+# isolated network. Everything the agent talks to has to be allowlisted here.
+#
+# Start with `warn: true` (below) so nothing breaks while you tune the
+# allowlist — check `docker logs iron-proxy` for what would have been
+# blocked, add the domain, then flip to `warn: false` to actually enforce.
+
+dns:
+  listen: ":53"
+  proxy_ip: "10.77.20.1" # must match the agent-devcontainer network's proxy address
+
+proxy:
+  http_listen: ":80"
+  https_listen: ":443"
+
+tls:
+  ca_cert: "/etc/iron-proxy/ca.crt"
+  ca_key: "/etc/iron-proxy/ca.key"
+
+transforms:
+  - name: allowlist
+    config:
+      warn: true
+      domains:
+        # Anthropic / Claude Code
+        - "*.anthropic.com"
+        - "claude.ai"
+        - "*.claude.ai"
+
+        # GitHub — git clone/fetch, gh CLI, Copilot install script, releases
+        - "github.com"
+        - "*.github.com"
+        - "*.githubusercontent.com"
+        - "gh.io"
+
+        # npm registry
+        - "registry.npmjs.org"
+        - "*.npmjs.org"
+
+        # Playwright browser downloads (watch the warn logs — the exact CDN
+        # host has changed across Playwright versions, add whatever shows up)
+        - "*.playwright.dev"
+        - "*.azureedge.net"
+
+log:
+  level: "info"

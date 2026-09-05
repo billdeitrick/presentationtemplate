@@ -1,0 +1,76 @@
+name: ${COMPOSE_PROJECT_NAME}
+
+networks:
+  # Isolated network for the agent — internal:true means it has NO route to
+  # the outside world. iron-proxy is dual-homed onto this network (fixed IP,
+  # for DNS interception) and iron-egress (for actual internet access), so it
+  # is the only way traffic can leave.
+  iron-internal:
+    internal: true
+    ipam:
+      config:
+        # Explicit gateway kept out of the .1/.2 range used below — Docker
+        # would otherwise auto-assign the gateway to .1 and collide with
+        # iron-proxy's static address.
+        - subnet: 10.77.20.0/24
+          gateway: 10.77.20.254
+  iron-egress: {}
+
+services:
+  iron-proxy:
+    image: ironsh/iron-proxy:latest
+    restart: unless-stopped
+    command: ["-config", "/etc/iron-proxy/proxy.yaml"]
+    networks:
+      iron-internal:
+        ipv4_address: 10.77.20.1
+      iron-egress: {}
+    volumes:
+      - ./config/proxy.yaml:/etc/iron-proxy/proxy.yaml:ro
+      - ./certs/ca.crt:/etc/iron-proxy/ca.crt:ro
+      - ./certs/ca.key:/etc/iron-proxy/ca.key:ro
+
+  agent:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    init: true
+    networks:
+      iron-internal:
+        ipv4_address: 10.77.20.2
+    working_dir: /workspaces/${WORKSPACE_NAME}
+    # Force all DNS resolution through iron-proxy — combined with the
+    # internal-only network above, this is what forces every request out
+    # through the proxy rather than relying on apps honoring proxy env vars.
+    dns:
+      - 10.77.20.1
+    environment:
+      # Node/npm ship their own CA bundle and ignore the OS trust store, so
+      # `update-ca-certificates` alone isn't enough to make npm trust
+      # iron-proxy's MITM'd TLS — this is needed on top of it.
+      - NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/iron-ca.crt
+    volumes:
+      - ../..:/workspaces/${WORKSPACE_NAME}:cached
+      - ./certs/ca.crt:/usr/local/share/ca-certificates/iron-ca.crt:ro
+      - node-modules:/workspaces/${WORKSPACE_NAME}/node_modules
+      # The repo bind-mount above pulls in .devcontainer/agent-devcontainer
+      # wholesale, which would otherwise hand the agent the CA private key,
+      # the generated .env, and the host-side shell-session tracking used by
+      # agent-up.js. Shadow all three so the agent never sees the real
+      # files, without excluding them from the host-side checkout.
+      - /dev/null:/workspaces/${WORKSPACE_NAME}/.devcontainer/agent-devcontainer/.env:ro
+    tmpfs:
+      - /workspaces/${WORKSPACE_NAME}/.devcontainer/agent-devcontainer/certs
+      - /workspaces/${WORKSPACE_NAME}/.devcontainer/agent-devcontainer/.sessions
+    # No published ports here, deliberately: agent's only network
+    # (iron-internal) is internal:true, and Docker silently refuses to
+    # publish ports for a container whose only network is internal — that's
+    # the same mechanism blocking egress, so it can't be worked around
+    # without a second, non-internal network that would reopen a route out.
+    # View the rendered slides from the human devcontainer instead.
+    command: sleep infinity
+    depends_on:
+      - iron-proxy
+
+volumes:
+  node-modules:

@@ -8,6 +8,12 @@ node_modules/
 # Devcontainer lock (intentionally excluded — always use latest feature versions)
 .devcontainer/devcontainer-lock.json
 
+# iron-proxy generated CA, per-machine project slug, and attached-shell
+# tracking for agent-up.js/agent-down.js (never commit these)
+.devcontainer/agent-devcontainer/certs/
+.devcontainer/agent-devcontainer/.env
+.devcontainer/agent-devcontainer/.sessions/
+
 # Claude Code local settings
 .claude/settings.local.json
 
