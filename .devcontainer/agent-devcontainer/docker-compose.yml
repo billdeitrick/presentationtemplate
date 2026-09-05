@@ -56,7 +56,7 @@ services:
       # The repo bind-mount above pulls in .devcontainer/agent-devcontainer
       # wholesale, which would otherwise hand the agent the CA private key,
       # the generated .env, and the host-side shell-session tracking used by
-      # agent-up.js. Shadow all three so the agent never sees the real
+      # agent.js. Shadow all three so the agent never sees the real
       # files, without excluding them from the host-side checkout.
       - /dev/null:/workspaces/${WORKSPACE_NAME}/.devcontainer/agent-devcontainer/.env:ro
     tmpfs:
