@@ -1,8 +1,17 @@
 FROM mcr.microsoft.com/devcontainers/javascript-node:22
 
+# Install system packages with Docker apt best practices: one update/install per layer,
+# no recommended extras, and clean up package lists afterward.
+RUN export DEBIAN_FRONTEND=noninteractive && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends screen && \
+    rm -rf /var/lib/apt/lists/*
+
 # Install global tools as root
 RUN npm install -g @playwright/cli
 RUN playwright-cli install-browser --with-deps chromium --only-shell
+
+
 
 # Create our developer user and set up the home directory. Sudo is scoped to
 # exactly what postCreateCommand needs as root — trusting the proxy CA, and
