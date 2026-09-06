@@ -16,12 +16,13 @@ Opens a landing page at `http://127.0.0.1:8080` where you can navigate to slides
 For working with an AI coding agent, `.devcontainer/agent-devcontainer/` runs it in a network-isolated container — all traffic goes through an `iron-proxy` sidecar with an allowlist, rather than the agent having open internet access.
 
 ```bash
-node agent.js up      # stand up the sandbox and open a shell in it
-node agent.js logs    # tail iron-proxy's logs (e.g. to see what's being blocked)
-node agent.js down    # force a teardown (not usually needed — see below)
+node agent.js up       # stand up the sandbox and open a shell in it
+node agent.js logs     # tail iron-proxy's logs (e.g. to see what's being blocked)
+node agent.js down     # force a teardown (not usually needed — see below)
+node agent.js destroy  # like down, but also wipes the persistent volumes (claude/copilot auth included)
 ```
 
-`up` is idempotent (safe to run again to get a shell in an already-running environment) and tears itself down automatically once the last shell you opened with it exits. See [docs/agent-devcontainer.md](docs/agent-devcontainer.md) for how it's built and why.
+`up` is idempotent (safe to run again to get a shell in an already-running environment) and tears itself down automatically once the last shell you opened with it exits. Both `down` and the auto-teardown keep `node_modules` and the developer home directory (so `claude`/`copilot` auth survives); use `destroy` when you actually want those gone. See [docs/agent-devcontainer.md](docs/agent-devcontainer.md) for how it's built and why.
 
 ## Project Structure
 

@@ -27,8 +27,6 @@ services:
       iron-egress: {}
     volumes:
       - ./config/proxy.yaml:/etc/iron-proxy/proxy.yaml:ro
-      - ./certs/ca.crt:/etc/iron-proxy/ca.crt:ro
-      - ./certs/ca.key:/etc/iron-proxy/ca.key:ro
 
   agent:
     build:
@@ -45,22 +43,23 @@ services:
     dns:
       - 10.77.20.1
     environment:
-      # Node/npm ship their own CA bundle and ignore the OS trust store, so
-      # `update-ca-certificates` alone isn't enough to make npm trust
-      # iron-proxy's MITM'd TLS — this is needed on top of it.
-      - NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/iron-ca.crt
+      # Lets an agent running in here tell it apart from the human
+      # devcontainer (same image) — see the sandbox-awareness skill.
+      - HARDENED_CONTAINER=1
     volumes:
       - ../..:/workspaces/${WORKSPACE_NAME}:cached
-      - ./certs/ca.crt:/usr/local/share/ca-certificates/iron-ca.crt:ro
       - node-modules:/workspaces/${WORKSPACE_NAME}/node_modules
+      # Persists across container recreation so `claude`/`copilot` (and
+      # anything else under $HOME) don't need to re-authenticate every time
+      # the sandbox is torn down and stood back up.
+      - developer-home:/home/developer
       # The repo bind-mount above pulls in .devcontainer/agent-devcontainer
-      # wholesale, which would otherwise hand the agent the CA private key,
-      # the generated .env, and the host-side shell-session tracking used by
-      # agent.js. Shadow all three so the agent never sees the real
-      # files, without excluding them from the host-side checkout.
+      # wholesale, which would otherwise hand the agent the generated .env
+      # and the host-side shell-session tracking used by agent.js. Shadow
+      # both so the agent never sees the real files, without excluding them
+      # from the host-side checkout.
       - /dev/null:/workspaces/${WORKSPACE_NAME}/.devcontainer/agent-devcontainer/.env:ro
     tmpfs:
-      - /workspaces/${WORKSPACE_NAME}/.devcontainer/agent-devcontainer/certs
       - /workspaces/${WORKSPACE_NAME}/.devcontainer/agent-devcontainer/.sessions
     # No published ports here, deliberately: agent's only network
     # (iron-internal) is internal:true, and Docker silently refuses to
@@ -74,3 +73,4 @@ services:
 
 volumes:
   node-modules:
+  developer-home:

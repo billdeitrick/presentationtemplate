@@ -1,5 +1,5 @@
 {
-  // Host prerequisites: node and openssl must be available on PATH.
+  // Host prerequisites: node must be available on PATH.
   // (initializeCommand runs on the host, before the container exists.)
   "name": "Agent (iron-proxy sandboxed)",
   "dockerComposeFile": "docker-compose.yml",

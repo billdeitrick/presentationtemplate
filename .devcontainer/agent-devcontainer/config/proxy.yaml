@@ -17,8 +17,11 @@ proxy:
   https_listen: ":443"
 
 tls:
-  ca_cert: "/etc/iron-proxy/ca.crt"
-  ca_key: "/etc/iron-proxy/ca.key"
+  # SNI-only: peek at the ClientHello SNI and TCP-passthrough the connection
+  # without terminating TLS. No CA to generate or trust — clients get the
+  # real upstream cert. Allowlist rules can only match on hostname in this
+  # mode (method/path/body are empty), which is all the rules below do anyway.
+  mode: "sni-only"
 
 transforms:
   - name: allowlist

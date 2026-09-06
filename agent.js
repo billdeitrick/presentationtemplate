@@ -17,7 +17,16 @@
 //   node agent.js down         Force a teardown regardless of tracked
 //                              sessions. Shouldn't be needed in the common
 //                              case — `up` tears down on its own — but it's
-//                              here for when something's stuck.
+//                              here for when something's stuck. Keeps the
+//                              persistent volumes (node_modules, and the
+//                              developer home directory — claude/copilot
+//                              auth, shell history, etc.).
+//   node agent.js destroy      Like `down`, but also deletes the persistent
+//                              volumes. Prompts for confirmation unless
+//                              --yes/-y is passed. Use this when you
+//                              actually want a clean slate (e.g. to reset
+//                              claude/copilot auth), not for routine
+//                              teardown.
 //   node agent.js logs [args]  Tail iron-proxy's logs, e.g. to see what the
 //                              allowlist is blocking/warning about. Extra
 //                              args pass through to `docker compose logs`
@@ -26,6 +35,7 @@
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
+const readline = require("readline");
 const { spawnSync, execFileSync } = require("child_process");
 
 const repoRoot = __dirname;
@@ -44,7 +54,11 @@ Commands:
                shell in it. Auto-tears down when the last attached shell
                exits.
   down         Force a teardown, regardless of tracked sessions. Shouldn't
-               be needed in the common case.
+               be needed in the common case. Keeps the persistent volumes.
+  destroy      Like down, but also deletes the persistent volumes
+               (node_modules, and the developer home directory — this is
+               where claude/copilot auth lives). Prompts for confirmation
+               unless --yes/-y is passed.
   logs [args]  Tail iron-proxy's logs. Extra args pass through to
                \`docker compose logs\` (default: -f).
   help         Show this message.
@@ -76,12 +90,11 @@ function pruneStaleSessions() {
   }
 }
 
-// Everything init-host.js generates: the CA (private key included) and the
-// per-checkout .env, plus the session-tracking dir. Regenerating these on
-// the next cold start is cheap, so there's no reason to leave them behind
-// once nothing's using them.
+// Everything init-host.js generates: the per-checkout .env, plus the
+// session-tracking dir. Regenerating these on the next cold start is cheap,
+// so there's no reason to leave them behind once nothing's using them.
 function cleanupGeneratedState() {
-  for (const rel of [".env", "certs", ".sessions"]) {
+  for (const rel of [".env", ".sessions"]) {
     fs.rmSync(path.join(composeDir, rel), { recursive: true, force: true });
   }
 }
@@ -137,6 +150,37 @@ function cmdDown() {
   cleanupGeneratedState();
 }
 
+function confirm(question) {
+  return new Promise((resolve) => {
+    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+    rl.question(question, (answer) => {
+      rl.close();
+      resolve(answer.trim().toLowerCase() === "yes");
+    });
+  });
+}
+
+async function cmdDestroy(extraArgs) {
+  const skipConfirm = extraArgs.includes("--yes") || extraArgs.includes("-y");
+
+  console.log("[agent] destroy — this removes the containers AND the persistent volumes:");
+  console.log("  - node-modules      (harmless — npm install regenerates it)");
+  console.log("  - developer-home    (claude/copilot auth, shell history, etc. — NOT recoverable)");
+
+  if (!skipConfirm) {
+    const ok = await confirm('Type "yes" to continue: ');
+    if (!ok) {
+      console.log("[agent] aborted — nothing was destroyed.");
+      return;
+    }
+  }
+
+  initHost();
+  execFileSync("docker", ["compose", "down", "--volumes"], { cwd: composeDir, stdio: "inherit" });
+  cleanupGeneratedState();
+  console.log("[agent] destroyed.");
+}
+
 function cmdLogs(extraArgs) {
   initHost();
   execFileSync("docker", ["compose", "logs", ...(extraArgs.length ? extraArgs : ["-f"]), "iron-proxy"], {
@@ -153,6 +197,9 @@ switch (cmd) {
     break;
   case "down":
     cmdDown();
+    break;
+  case "destroy":
+    cmdDestroy(rest);
     break;
   case "logs":
     cmdLogs(rest);

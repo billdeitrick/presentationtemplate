@@ -1,5 +1,5 @@
 {
-  "name": "Presentation Dev",
+  "name": "Presentation Dev (Human)",
   "build": {
     "dockerfile": "../Dockerfile",
     "context": ".."
@@ -9,7 +9,10 @@
   "remoteUser": "developer",
   "containerUser": "developer",
   "mounts": [
-    "source=${localWorkspaceFolderBasename}-node-modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+    "source=${localWorkspaceFolderBasename}-node-modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
+    // Persists across container recreation so `claude`/`copilot` (and
+    // anything else under $HOME) don't need to re-authenticate every time.
+    "source=${localWorkspaceFolderBasename}-developer-home,target=/home/developer,type=volume"
   ],
   "postCreateCommand": "bash .devcontainer/setup.sh",
   "forwardPorts": [8080, 3456],

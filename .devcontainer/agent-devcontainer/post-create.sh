@@ -2,16 +2,18 @@
 # Runs INSIDE the agent container (via devcontainer.json's postCreateCommand).
 set -euo pipefail
 
-echo "[iron-proxy] trusting proxy CA..."
-sudo update-ca-certificates
+# Commits made in here can come from either Claude Code or Copilot CLI in the
+# same shell, with no reliable way to tell which one is "active" at config
+# time — so use one shared identity for the container rather than guessing.
+# This makes agent-authored commits instantly distinguishable from your own
+# in `git log`/`git blame`; which specific tool/model drove a given commit is
+# left to that tool's own commit-trailer convention (e.g. Claude Code appends
+# a `Co-Authored-By:` trailer automatically).
+git config --global user.name "Sandboxed Agent"
+git config --global user.email "agent@presentationtemplate.local"
 
-# The bind-mounted workspace shows up owned by a different user (often root)
-# than the container's developer user, which trips git's dubious-ownership
-# check on every git command. This is the intended trust boundary here (the
-# whole point of this container is to work in this one repo), so trust it.
-git config --global --add safe.directory "$(pwd)"
-
-# Standard project setup (npm install, etc.)
+# Standard project setup — safe.directory, npm install, etc. — shared with
+# the human devcontainer.
 bash .devcontainer/setup.sh
 
 echo "[iron-proxy] checking egress through the proxy..."
