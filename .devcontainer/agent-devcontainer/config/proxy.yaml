@@ -26,7 +26,7 @@ tls:
 transforms:
   - name: allowlist
     config:
-      warn: true
+      warn: false
       domains:
         # Anthropic / Claude Code
         - "*.anthropic.com"
@@ -46,7 +46,6 @@ transforms:
         # Playwright browser downloads (watch the warn logs — the exact CDN
         # host has changed across Playwright versions, add whatever shows up)
         - "*.playwright.dev"
-        - "*.azureedge.net"
 
 log:
   level: "info"
