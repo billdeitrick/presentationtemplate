@@ -32,6 +32,7 @@ transforms:
         - "*.anthropic.com"
         - "claude.ai"
         - "*.claude.ai"
+        - "*.claude.com"
 
         # GitHub — git clone/fetch, gh CLI, Copilot install script, releases
         - "github.com"
