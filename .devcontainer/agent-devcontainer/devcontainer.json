@@ -1,0 +1,12 @@
+{
+  // Host prerequisites: node must be available on PATH.
+  // (initializeCommand runs on the host, before the container exists.)
+  "name": "Agent (iron-proxy sandboxed)",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "agent",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "initializeCommand": "node .devcontainer/agent-devcontainer/init-host.js",
+  "postCreateCommand": "bash .devcontainer/agent-devcontainer/post-create.sh",
+  "remoteUser": "developer",
+  "containerUser": "developer"
+}

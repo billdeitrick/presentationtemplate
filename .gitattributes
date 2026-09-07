@@ -1,0 +1,17 @@
+# Normalize everything to LF in the repo and on checkout, regardless of
+# platform or any per-machine core.autocrlf setting (host Windows, human
+# devcontainer, agent devcontainer all agree this way).
+* text=auto eol=lf
+
+# Common binary assets — never touched by line-ending normalization.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.svg binary
+*.ico binary
+*.mp4 binary
+*.webm binary
+*.woff binary
+*.woff2 binary
+*.ttf binary

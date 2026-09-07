@@ -41,6 +41,10 @@ ALWAYS use the revealjs skill wherever possible when working with slides and des
 - Navigate with arrow keys; vertical slides use the down arrow
 - Be sure to always use reveal.js config options and utilities as a first choice before resulting to ad-hoc HTML, JS, and CSS
 
+## Environment
+
+At the start of a session (or if a network request unexpectedly fails), use the sandbox-awareness skill to check whether you're running in the network-hardened agent devcontainer — it explains the egress restrictions and where the domain allowlist lives.
+
 ## Tools
 
 ### Playwright
@@ -57,6 +61,7 @@ Use Playwright to take screenshots, verify slide design, test animations, and it
 
 The browser will log a `favicon.ico` 404 console error — this is harmless and can be ignored.
 
+- `playwright-cli open` (and any other command that launches a browser) needs an explicit `--browser chromium` flag, e.g. `playwright-cli open --browser chromium http://127.0.0.1:8080`. The image only installs Playwright's own downloadable Chrome-for-Testing build, not real Google Chrome — `open`'s default `--browser` value is `chrome`, which fails with "Chromium distribution 'chrome' is not found" if you omit the flag.
 - Use `Reveal.configure({transition: 'none'})` via `eval` before navigating, to avoid capturing mid-transition artifacts
 - Use `Reveal.slide(N)` via `eval` to navigate without triggering transitions, rather than `goto` with a hash URL. For vertical slides use the two-argument form: `Reveal.slide(h, v)`
 - The dev server is managed by the user — never start or restart it
