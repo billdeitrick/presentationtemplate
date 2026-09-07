@@ -39,6 +39,9 @@ transforms:
         - "*.github.com"
         - "*.githubusercontent.com"
         - "gh.io"
+        - "githubcopilot.com"
+        - "*.githubcopilot.com"
+        - "*.business.githubcopilot.com"
 
         # npm registry
         - "registry.npmjs.org"
